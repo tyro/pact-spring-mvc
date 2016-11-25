@@ -1,0 +1,14 @@
+{
+  "title": "Example Schema",
+  "type": "object",
+  "properties": {
+    "integer": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "optional_integer": {
+      "type": "number"
+    }
+  },
+  "required": ["integer"]
+}

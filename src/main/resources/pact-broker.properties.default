@@ -1,0 +1,5 @@
+# Copy this file into the test classpath for your consumer and provider libraries and point to your broker(s).
+# Alternatively you can use System Properties in your setup to configure these.
+
+#pact.broker.publish.url=test
+#pact.broker.download.urls=test1,test2
