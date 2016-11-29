@@ -25,6 +25,10 @@ limitations under the License.
 This project allows you to record your integration tests (using a mocked server) against a client and then replay them against the real server to make sure your
 mocks are still faking the server correctly and that your server and client are playing nicely.
 
+## Contributing
+
+See (CONTRIBUTING.md) for details.
+
 ## Getting Started
 `pact-spring-mvc` requires URLs for a [PACT broker](https://github.com/bethesque/pact_broker) in order to publish and download PACT files.
 You will need to specify the URLs when using this library. This can be done by:
