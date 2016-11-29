@@ -4,7 +4,7 @@ Please note that while we welcome pull requests, we may not be able to accept al
 We will work with individual contributors to ensure overall project goals and quality standards are met.
 
 Before submitting your first pull request, please take a moment to read and sign (electronically or otherwise)
-the Contributor_License_Agreement.pdf file in the project, and either send via mail to the address within,
+the [CLA](Contributor_License_Agreement.pdf) file in the project, and either send via mail to the address within,
 or email to opensource@tyro.com. Please specify the same email address in the CLA that you will use to submit
 your pull request.
 

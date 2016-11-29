@@ -27,7 +27,7 @@ mocks are still faking the server correctly and that your server and client are 
 
 ## Contributing
 
-See (CONTRIBUTING.md) for details.
+See [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Getting Started
 `pact-spring-mvc` requires URLs for a [PACT broker](https://github.com/bethesque/pact_broker) in order to publish and download PACT files.
