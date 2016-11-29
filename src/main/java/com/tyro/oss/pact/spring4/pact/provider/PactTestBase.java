@@ -28,8 +28,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -52,7 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.UriUtils;
 
-import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
+
 import com.tyro.oss.pact.spring4.pact.model.Pact;
 import com.tyro.oss.pact.spring4.pact.provider.annotations.WithSpringSecurity;
 

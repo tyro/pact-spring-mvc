@@ -21,15 +21,13 @@ package com.tyro.oss.pact.spring4.util;
 
 import java.lang.reflect.Type;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
-import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
-
-import io.undertow.server.handlers.accesslog.LogFileHeaderGenerator;
 
 public class GsonStringConverter implements ObjectStringConverter {
 

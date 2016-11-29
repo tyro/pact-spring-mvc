@@ -21,11 +21,14 @@ package com.tyro.oss.pact.spring4.pact.examples.stateful.contract.provider.repos
 
 import static java.util.Arrays.asList;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+
 import org.springframework.stereotype.Component;
+
 
 import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api.BookDTO;
 

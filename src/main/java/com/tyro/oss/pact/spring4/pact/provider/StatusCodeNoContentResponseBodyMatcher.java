@@ -22,8 +22,10 @@ package com.tyro.oss.pact.spring4.pact.provider;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+
 import org.apache.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
+
 
 import com.tyro.oss.pact.spring4.pact.model.Pact;
 

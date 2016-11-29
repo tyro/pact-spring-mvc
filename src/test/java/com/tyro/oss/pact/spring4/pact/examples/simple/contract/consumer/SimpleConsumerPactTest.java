@@ -22,7 +22,9 @@ package com.tyro.oss.pact.spring4.pact.examples.simple.contract.consumer;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+
 import java.io.File;
+
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,6 +33,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
+
 
 import com.tyro.oss.pact.rest.RestRequestDescriptor;
 import com.tyro.oss.pact.spring4.pact.consumer.TuPactRecordingServer;

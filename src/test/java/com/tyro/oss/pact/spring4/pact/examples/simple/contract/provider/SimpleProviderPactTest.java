@@ -22,6 +22,7 @@ package com.tyro.oss.pact.spring4.pact.examples.simple.contract.provider;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+
 import com.tyro.oss.pact.spring4.pact.provider.PactTest;
 import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner;
 

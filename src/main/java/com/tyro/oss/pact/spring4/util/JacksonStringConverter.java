@@ -23,6 +23,7 @@ package com.tyro.oss.pact.spring4.util;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JacksonStringConverter implements ObjectStringConverter {

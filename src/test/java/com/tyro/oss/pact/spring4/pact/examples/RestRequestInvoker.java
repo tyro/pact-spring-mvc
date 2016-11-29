@@ -22,6 +22,7 @@ package com.tyro.oss.pact.spring4.pact.examples;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
+
 import com.tyro.oss.pact.rest.RestRequestDescriptor;
 
 public class RestRequestInvoker {

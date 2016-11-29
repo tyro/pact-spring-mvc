@@ -22,12 +22,14 @@ package com.tyro.oss.pact.spring4.pact.provider;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.find;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.*;
+
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -42,9 +44,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+
 import com.google.gson.GsonBuilder;
 
-import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
 import com.tyro.oss.pact.spring4.pact.model.ObjectStringConverterSource;
 import com.tyro.oss.pact.spring4.pact.model.Pact;
 import com.tyro.oss.pact.spring4.pact.model.Pact.Interaction;

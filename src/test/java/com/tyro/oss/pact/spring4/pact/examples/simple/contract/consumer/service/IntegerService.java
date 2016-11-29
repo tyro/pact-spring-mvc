@@ -22,6 +22,7 @@ package com.tyro.oss.pact.spring4.pact.examples.simple.contract.consumer.service
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
+
 import com.tyro.oss.pact.rest.RestRequestDescriptor;
 import com.tyro.oss.pact.spring4.pact.examples.RestRequestInvoker;
 import com.tyro.oss.pact.spring4.pact.examples.simple.contract.api.IntegerDTO;

@@ -27,6 +27,7 @@ package com.tyro.oss.pact.spring4.pact.examples.schema.contract.provider.control
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.tyro.oss.pact.spring4.pact.examples.schema.contract.api.IntegerDTO;
 
 @RestController
