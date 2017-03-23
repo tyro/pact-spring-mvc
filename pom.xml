@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tyro.oss.pact</groupId>
     <artifactId>pact-spring-mvc</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <springframework.version>4.1.1.RELEASE</springframework.version>
