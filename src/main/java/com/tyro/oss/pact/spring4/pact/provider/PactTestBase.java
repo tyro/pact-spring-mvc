@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,20 +19,8 @@
  */
 package com.tyro.oss.pact.spring4.pact.provider;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.StringStartsWith.startsWith;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
-
+import com.tyro.oss.pact.spring4.pact.model.Pact;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.WithSpringSecurity;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -54,9 +42,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.UriUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import com.tyro.oss.pact.spring4.pact.model.Pact;
-import com.tyro.oss.pact.spring4.pact.provider.annotations.WithSpringSecurity;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.StringStartsWith.startsWith;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(PactTestRunner.class)
 @WebAppConfiguration
@@ -135,7 +132,7 @@ public abstract class PactTestBase extends AbstractJUnit4SpringContextTests {
         String uri = request.getUri().contains(getServletContextPathWithoutTrailingSlash())
                 ? StringUtils.substringAfter(request.getUri(), getServletContextPathWithoutTrailingSlash())
                 : request.getUri();
-        uri = UriUtils.decode(uri, "UTF-8");
+        uri = UriUtils.decode(uri, UTF_8);
 
         switch (request.getMethod()) {
             case GET:

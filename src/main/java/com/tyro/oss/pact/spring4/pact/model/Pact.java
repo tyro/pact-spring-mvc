@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class Pact {
 
 
@@ -68,7 +70,7 @@ public class Pact {
     }
 
     public static void writePact(Pact pact, File pactFile, ObjectStringConverter jsonConverter) throws IOException {
-        FileUtils.writeStringToFile(pactFile, jsonConverter.fromObject(pact));
+        FileUtils.writeStringToFile(pactFile, jsonConverter.fromObject(pact), UTF_8);
     }
 
     private Pact(List<Interaction> interactions, ObjectStringConverter jsonConverter) {

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,26 +19,11 @@
  */
 package com.tyro.oss.pact.spring4.pact.consumer;
 
-import static com.tyro.oss.pact.spring4.util.JsonSchemaMatcher.matchesSchema;
-import static java.lang.String.format;
-import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
+import com.tyro.oss.pact.rest.RestRequestDescriptor;
+import com.tyro.oss.pact.spring4.pact.model.Pact;
+import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -58,13 +43,22 @@ import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.util.UriUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
-
-import com.tyro.oss.pact.rest.RestRequestDescriptor;
-import com.tyro.oss.pact.spring4.pact.model.Pact;
-import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
+import static com.tyro.oss.pact.spring4.util.JsonSchemaMatcher.matchesSchema;
+import static java.lang.String.format;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 public class ReturnExpect<T> {
 
@@ -193,7 +187,7 @@ public class ReturnExpect<T> {
      */
     public ReturnExpect<T> matchingSchema(InputStream inputStream) {
         try {
-            return matchingSchema(IOUtils.toString(inputStream, "UTF-8"));
+            return matchingSchema(IOUtils.toString(inputStream, UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -290,7 +284,7 @@ public class ReturnExpect<T> {
     private Pact getPactFile() throws IOException {
         Pact pact;
         if (pactFile.exists() && (pactFile.length() > 0)) {
-            pact = Pact.parse(FileUtils.readFileToString(pactFile), objectConverter);
+            pact = Pact.parse(FileUtils.readFileToString(pactFile, UTF_8), objectConverter);
         } else {
             pact = Pact.newPact(objectConverter);
         }
@@ -298,7 +292,7 @@ public class ReturnExpect<T> {
     }
 
     private void getOrCreateWorkflowAndAddInteraction(Pact pact, ClientHttpRequest clientRequest, ClientHttpResponse response) throws IOException {
-        String bodyString = StreamUtils.copyToString(response.getBody(), Charset.defaultCharset());
+        String bodyString = StreamUtils.copyToString(response.getBody(), UTF_8);
         response.getBody().reset();
 
         Pact.Interaction interaction = new Pact.Interaction(
@@ -329,10 +323,6 @@ public class ReturnExpect<T> {
     }
 
     private static String urlencode(String path) {
-        try {
-            return UriUtils.encodeQuery(path, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return UriUtils.encodeQuery(path, UTF_8);
     }
 }
