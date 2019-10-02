@@ -19,19 +19,16 @@
  */
 package com.tyro.oss.pact.spring4.pact.provider;
 
-import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.find;
-
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Method;
-import java.util.*;
-
-
-import org.apache.commons.lang.StringUtils;
+import com.google.gson.GsonBuilder;
+import com.tyro.oss.pact.spring4.pact.model.ObjectStringConverterSource;
+import com.tyro.oss.pact.spring4.pact.model.Pact;
+import com.tyro.oss.pact.spring4.pact.model.Pact.Interaction;
+import com.tyro.oss.pact.spring4.pact.model.Pact.Workflow;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.WithPactFilter;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.WithPactResolver;
+import com.tyro.oss.pact.spring4.util.GsonStringConverter;
+import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -44,17 +41,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Method;
+import java.util.*;
 
-import com.google.gson.GsonBuilder;
-
-import com.tyro.oss.pact.spring4.pact.model.ObjectStringConverterSource;
-import com.tyro.oss.pact.spring4.pact.model.Pact;
-import com.tyro.oss.pact.spring4.pact.model.Pact.Interaction;
-import com.tyro.oss.pact.spring4.pact.model.Pact.Workflow;
-import com.tyro.oss.pact.spring4.pact.provider.annotations.WithPactFilter;
-import com.tyro.oss.pact.spring4.pact.provider.annotations.WithPactResolver;
-import com.tyro.oss.pact.spring4.util.GsonStringConverter;
-import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
+import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 
 public class PactTestRunner extends SpringJUnit4ClassRunner {
 

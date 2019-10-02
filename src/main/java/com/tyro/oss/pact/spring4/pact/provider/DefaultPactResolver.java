@@ -19,18 +19,13 @@
  */
 package com.tyro.oss.pact.spring4.pact.provider;
 
-import static com.google.common.collect.Lists.transform;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-
+import com.google.common.base.Function;
+import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
+import com.tyro.oss.pact.spring4.pact.model.Pact;
+import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.PactDefinition;
+import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +33,13 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
-import com.google.common.base.Function;
-
-import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
-import com.tyro.oss.pact.spring4.pact.model.Pact;
-import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.PactDefinition;
-import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
+import static com.google.common.collect.Lists.transform;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 public class DefaultPactResolver implements PactResolver {
 
