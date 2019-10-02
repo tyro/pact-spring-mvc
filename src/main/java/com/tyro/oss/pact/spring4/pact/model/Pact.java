@@ -51,7 +51,7 @@ public class Pact {
     private final Map<String, Workflow> workFlows = new HashMap<>();
 
     public static Pact newPact(ObjectStringConverter jsonConverter) {
-        return new Pact(new ArrayList<Interaction>(), jsonConverter);
+        return new Pact(new ArrayList<>(), jsonConverter);
     }
 
     public static Pact parse(String json, ObjectStringConverter jsonConverter) throws IOException {

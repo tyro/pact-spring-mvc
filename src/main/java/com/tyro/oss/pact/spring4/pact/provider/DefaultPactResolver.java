@@ -19,7 +19,6 @@
  */
 package com.tyro.oss.pact.spring4.pact.provider;
 
-import com.google.common.base.Function;
 import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
 import com.tyro.oss.pact.spring4.pact.model.Pact;
 import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.PactDefinition;
@@ -37,10 +36,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static com.google.common.collect.Lists.transform;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 
 public class DefaultPactResolver implements PactResolver {
 
@@ -61,12 +60,9 @@ public class DefaultPactResolver implements PactResolver {
             return singletonList(pact);
         }
 
-        return transform(getPactVersionsToRun(pactDefinition), new Function<String, Pact>() {
-            @Override
-            public Pact apply(String version) {
-                return resolvePact(pactDefinition, version, jsonConverter);
-            }
-        });
+        return getPactVersionsToRun(pactDefinition).stream()
+                .map(version -> resolvePact(pactDefinition, version, jsonConverter))
+                .collect(toList());
     }
 
     protected Pact resolvePact(PactDefinition pactDefinition, String version, ObjectStringConverter jsonConverter) {

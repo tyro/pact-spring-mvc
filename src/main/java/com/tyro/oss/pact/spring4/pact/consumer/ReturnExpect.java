@@ -19,8 +19,6 @@
  */
 package com.tyro.oss.pact.spring4.pact.consumer;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
 import com.tyro.oss.pact.rest.RestRequestDescriptor;
 import com.tyro.oss.pact.spring4.pact.model.Pact;
 import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
@@ -50,12 +48,14 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import static com.tyro.oss.pact.spring4.util.JsonSchemaMatcher.matchesSchema;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toMap;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -262,12 +262,7 @@ public class ReturnExpect<T> {
         if (requestObject != null && requestObject instanceof HttpEntity) {
             HttpEntity httpEntity = (HttpEntity) requestObject;
             HttpHeaders headers = httpEntity.getHeaders();
-            Map<String, Matcher<List<String>>> stringMatcherMap = Maps.transformValues(headers, new Function<List<String>, Matcher<List<String>>>() {
-                @Override
-                public Matcher<List<String>> apply(List<String> input) {
-                    return is(input);
-                }
-            });
+            Map<String, Matcher<List<String>>> stringMatcherMap = headers.entrySet().stream().collect(toMap(Entry::getKey, e -> is(e.getValue())));
             expectedHeaders.putAll(stringMatcherMap);
         }
 

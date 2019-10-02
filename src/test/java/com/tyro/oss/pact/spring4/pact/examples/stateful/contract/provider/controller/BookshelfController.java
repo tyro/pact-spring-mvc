@@ -19,18 +19,16 @@
  */
 package com.tyro.oss.pact.spring4.pact.examples.stateful.contract.provider.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-
+import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api.BookCollectionDTO;
+import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api.BookDTO;
+import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.provider.repository.Bookshelf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 
-import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api.BookCollectionDTO;
-import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api.BookDTO;
-import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.provider.repository.Bookshelf;
+import static java.util.stream.Collectors.toList;
 
 @RestController
 public class BookshelfController {
@@ -41,14 +39,14 @@ public class BookshelfController {
 
     @RequestMapping(value = "/read")
     public BookCollectionDTO getReadBooks() {
-        List<BookDTO> readBooks = bookshelf.getBooks().stream().filter(book -> book.isRead()).collect(Collectors.toList());
+        List<BookDTO> readBooks = bookshelf.getBooks().stream().filter(BookDTO::isRead).collect(toList());
         return new BookCollectionDTO(readBooks);
     }
 
 
     @RequestMapping(value = "/shelf")
     public BookCollectionDTO getShelvedBooks() {
-        List<BookDTO> shelvedBooks = bookshelf.getBooks().stream().filter(book -> book.isOnShelf()).collect(Collectors.toList());
+        List<BookDTO> shelvedBooks = bookshelf.getBooks().stream().filter(BookDTO::isOnShelf).collect(toList());
         return new BookCollectionDTO(shelvedBooks);
     }
 }

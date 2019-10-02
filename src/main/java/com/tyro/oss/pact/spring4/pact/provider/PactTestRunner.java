@@ -48,8 +48,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.find;
+import static java.util.function.Predicate.isEqual;
 
 public class PactTestRunner extends SpringJUnit4ClassRunner {
 
@@ -208,7 +207,7 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
 
                 List<Interaction> uniqueInteractions = getUniqueInteractions(pact);
 
-                for (Pact.Interaction interaction : uniqueInteractions) {
+                for (Interaction interaction : uniqueInteractions) {
                     if (!pactFilter.shouldExcludeInteractionOrWorkflow(clazz, pact, interaction.getId())) {
                         if (runOnly.isEmpty() || runOnly.contains(interaction.getId())) {
                             testMethods.add(new PactFrameworkMethod(pact.getDisplayName(), interaction, shouldExclude));
@@ -237,7 +236,7 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
         List<Interaction> uniqueInteractions = new ArrayList<>();
 
         for (Interaction interaction : pact.getInteractions()) {
-            Interaction existingInteraction = find(uniqueInteractions, equalTo(interaction), null);
+            Interaction existingInteraction = uniqueInteractions.stream().filter(isEqual(interaction)).findFirst().orElse(null);
 
             if (existingInteraction != null) {
                 LOG.info("Interaction " + interaction.getId() + " is a duplicate of " + existingInteraction.getId() + " and will not be replayed");
@@ -253,7 +252,7 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
         List<Workflow> uniqueWorkflows = new ArrayList<>();
 
         for (Workflow workflow : pact.getWorkFlows().values()) {
-            Workflow existingWorkflow = find(uniqueWorkflows, equalTo(workflow), null);
+            Workflow existingWorkflow = uniqueWorkflows.stream().filter(isEqual(workflow)).findFirst().orElse(null);
 
             if (existingWorkflow != null) {
                 LOG.info("Workflow " + workflow.getId() + " is a duplicate of " + existingWorkflow.getId() + " and will not be replayed");
