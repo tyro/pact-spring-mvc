@@ -7,8 +7,8 @@
     <version>1.0.1-SNAPSHOT</version>
 
     <properties>
-        <springframework.version>4.1.1.RELEASE</springframework.version>
-        <springsecurity.version>4.0.1.RELEASE</springsecurity.version>
+        <springframework.version>5.2.0.RELEASE</springframework.version>
+        <springsecurity.version>5.2.0.RELEASE</springsecurity.version>
     </properties>
 
     <build>
@@ -205,11 +205,6 @@
 
         <!-- Third-party dependencies -->
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>18.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.networknt</groupId>
             <artifactId>json-schema-validator</artifactId>
             <version>0.1.0</version>
@@ -217,23 +212,17 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.3.4</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.4</version>
+            <version>2.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
-            <optional>true</optional>
+            <version>3.9</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>1.4</version>
+            <version>2.6</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -255,7 +244,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
         </dependency>
         <dependency>
             <groupId>org.skyscreamer</groupId>

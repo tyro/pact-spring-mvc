@@ -19,21 +19,20 @@
  */
 package com.tyro.oss.pact.spring4.pact.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.*;
-
-
+import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.*;
 
-import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Pact {
 
@@ -52,7 +51,7 @@ public class Pact {
     private final Map<String, Workflow> workFlows = new HashMap<>();
 
     public static Pact newPact(ObjectStringConverter jsonConverter) {
-        return new Pact(new ArrayList<Interaction>(), jsonConverter);
+        return new Pact(new ArrayList<>(), jsonConverter);
     }
 
     public static Pact parse(String json, ObjectStringConverter jsonConverter) throws IOException {
@@ -71,7 +70,7 @@ public class Pact {
     }
 
     public static void writePact(Pact pact, File pactFile, ObjectStringConverter jsonConverter) throws IOException {
-        FileUtils.writeStringToFile(pactFile, jsonConverter.fromObject(pact));
+        FileUtils.writeStringToFile(pactFile, jsonConverter.fromObject(pact), UTF_8);
     }
 
     private Pact(List<Interaction> interactions, ObjectStringConverter jsonConverter) {

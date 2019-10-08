@@ -19,16 +19,17 @@
  */
 package com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api;
 
-import static java.util.Arrays.asList;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-
-import com.google.common.base.Objects;
+import static java.util.Arrays.asList;
 
 public class BookCollectionDTO {
     private final Set<BookDTO> books = new HashSet<>();
@@ -49,26 +50,17 @@ public class BookCollectionDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        BookCollectionDTO that = (BookCollectionDTO) o;
-        return Objects.equal(books, that.books);
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(books);
+    public boolean equals(Object other) {
+        return EqualsBuilder.reflectionEquals(this, other);
     }
 
     @Override
     public String toString() {
-        return "BookCollectionDTO{" +
-                "books=" + books +
-                '}';
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

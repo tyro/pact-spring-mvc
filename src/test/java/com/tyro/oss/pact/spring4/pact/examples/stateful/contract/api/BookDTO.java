@@ -19,7 +19,10 @@
  */
 package com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api;
 
-import com.google.common.base.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class BookDTO {
     public String name;
@@ -49,30 +52,17 @@ public class BookDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        BookDTO bookDTO = (BookDTO) o;
-        return Objects.equal(onShelf, bookDTO.onShelf)
-                && Objects.equal(read, bookDTO.read)
-                && Objects.equal(name, bookDTO.name);
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(name, onShelf, read);
+    public boolean equals(Object other) {
+        return EqualsBuilder.reflectionEquals(this, other);
     }
 
     @Override
     public String toString() {
-        return "BookDTO{" +
-                "name='" + name + '\'' +
-                ", onShelf=" + onShelf +
-                ", read=" + read +
-                '}';
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

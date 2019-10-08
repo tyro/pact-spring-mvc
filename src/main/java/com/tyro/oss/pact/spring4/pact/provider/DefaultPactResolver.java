@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,18 +19,12 @@
  */
 package com.tyro.oss.pact.spring4.pact.provider;
 
-import static com.google.common.collect.Lists.transform;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-
+import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
+import com.tyro.oss.pact.spring4.pact.model.Pact;
+import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.PactDefinition;
+import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +32,14 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
-import com.google.common.base.Function;
-
-import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
-import com.tyro.oss.pact.spring4.pact.model.Pact;
-import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.PactDefinition;
-import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 
 public class DefaultPactResolver implements PactResolver {
 
@@ -65,12 +60,9 @@ public class DefaultPactResolver implements PactResolver {
             return singletonList(pact);
         }
 
-        return transform(getPactVersionsToRun(pactDefinition), new Function<String, Pact>() {
-            @Override
-            public Pact apply(String version) {
-                return resolvePact(pactDefinition, version, jsonConverter);
-            }
-        });
+        return getPactVersionsToRun(pactDefinition).stream()
+                .map(version -> resolvePact(pactDefinition, version, jsonConverter))
+                .collect(toList());
     }
 
     protected Pact resolvePact(PactDefinition pactDefinition, String version, ObjectStringConverter jsonConverter) {
@@ -126,7 +118,7 @@ public class DefaultPactResolver implements PactResolver {
 
     protected String loadPactFile(String localPactFilePath) {
         try {
-            return FileUtils.readFileToString(new File(localPactFilePath));
+            return FileUtils.readFileToString(new File(localPactFilePath), UTF_8);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load Pact file from local file path: " + localPactFilePath, e);
         }
