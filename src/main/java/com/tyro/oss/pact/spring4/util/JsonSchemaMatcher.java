@@ -24,22 +24,18 @@
  */
 package com.tyro.oss.pact.spring4.util;
 
-import static java.util.stream.Collectors.toList;
-
-
-import java.io.IOException;
-import java.util.List;
-
-
-import org.hamcrest.Description;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
-
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.ValidationMessage;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
+
+import java.io.IOException;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class JsonSchemaMatcher extends TypeSafeDiagnosingMatcher<String> {
 
@@ -52,7 +48,7 @@ public class JsonSchemaMatcher extends TypeSafeDiagnosingMatcher<String> {
 
     private JsonSchemaMatcher(String unparsedSchema) {
         this.unparsedSchema = unparsedSchema;
-        JsonSchemaFactory jsonSchemaFactory = new JsonSchemaFactory();
+        JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance();
         this.schema = jsonSchemaFactory.getSchema(unparsedSchema);
     }
 
