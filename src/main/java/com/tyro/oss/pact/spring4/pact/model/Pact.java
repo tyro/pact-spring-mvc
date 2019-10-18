@@ -21,7 +21,6 @@ package com.tyro.oss.pact.spring4.pact.model;
 
 import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.http.HttpHeaders;
@@ -30,15 +29,14 @@ import org.springframework.http.HttpMethod;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Pact {
-
-
-    @Deprecated
-    private List<Interaction> interactions;
 
     private transient ObjectStringConverter internalJsonConverter;
 
@@ -54,13 +52,10 @@ public class Pact {
         return new Pact(new ArrayList<>(), jsonConverter);
     }
 
-    public static Pact parse(String json, ObjectStringConverter jsonConverter) throws IOException {
+    public static Pact parse(String json, ObjectStringConverter jsonConverter) {
         Pact pact = jsonConverter.fromString(json, Pact.class);
         pact.internalJsonConverter = jsonConverter;
 
-        for (Interaction interaction : pact.getInteractions()) {
-            interaction.setJsonConverter(jsonConverter);
-        }
         for (Map.Entry<String, Workflow> stringWorkflowEntry : pact.getWorkFlows().entrySet()) {
             for (Interaction interaction : stringWorkflowEntry.getValue().getInteractions()) {
                 interaction.setJsonConverter(jsonConverter);
@@ -74,29 +69,12 @@ public class Pact {
     }
 
     private Pact(List<Interaction> interactions, ObjectStringConverter jsonConverter) {
-        this.interactions = interactions;
         this.internalJsonConverter = jsonConverter;
         if (interactions != null) {
             for (Interaction interaction : interactions) {
                 interaction.setJsonConverter(jsonConverter);
             }
         }
-
-    }
-
-    public List<Interaction> getInteractions() {
-        if (interactions != null) {
-            return Collections.unmodifiableList(interactions);
-        }
-        return Collections.EMPTY_LIST;
-    }
-
-    public void addInteraction(Interaction interaction, String interactionName) {
-        if (StringUtils.isEmpty(interactionName)) {
-            interactionName = String.valueOf(interactions.size());
-        }
-        interaction.setId(interactionName);
-        interactions.add(interaction);
     }
 
     public Workflow getWorkflow(String id, List<ProviderState> providerStates) {
@@ -139,13 +117,10 @@ public class Pact {
 
     public static class Workflow {
 
-        private String id;
-
-        private List<ProviderState> providerStates;
-
+        private final String id;
+        private final List<ProviderState> providerStates;
         private final List<Interaction> interactions = new ArrayList<>();
-
-        private transient ObjectStringConverter jsonConverter;
+        private final transient ObjectStringConverter jsonConverter;
 
         public Workflow(String id, List<ProviderState> providerStates, ObjectStringConverter jsonConverter) {
             this.id = id;
@@ -183,14 +158,8 @@ public class Pact {
 
     public static class Interaction {
 
-        private String id;
-
-        @Deprecated
-        private ProviderState providerState;
-
-        private InteractionRequest request;
-
-        private InteractionResponse response;
+        private final InteractionRequest request;
+        private final InteractionResponse response;
 
         public void setJsonConverter(ObjectStringConverter jsonConverter) {
             this.jsonConverter = jsonConverter;
@@ -198,19 +167,10 @@ public class Pact {
 
         private transient ObjectStringConverter jsonConverter;
 
-        public Interaction(ProviderState providerState, InteractionRequest request, InteractionResponse response, ObjectStringConverter jsonConverter) {
-            this.providerState = providerState;
+        public Interaction(InteractionRequest request, InteractionResponse response, ObjectStringConverter jsonConverter) {
             this.request = request;
             this.response = response;
             this.jsonConverter = jsonConverter;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public ProviderState getProviderState() {
-            return providerState;
         }
 
         public InteractionRequest getRequest() {
@@ -221,10 +181,6 @@ public class Pact {
             return response;
         }
 
-        private void setId(String id) {
-            this.id = id;
-        }
-
         @Override
         public String toString() {
             return jsonConverter.fromObject(this);
@@ -232,24 +188,21 @@ public class Pact {
 
         @Override
         public boolean equals(Object other) {
-            return EqualsBuilder.reflectionEquals(this, other, "id");
+            return EqualsBuilder.reflectionEquals(this, other);
         }
 
         @Override
         public int hashCode() {
-            return HashCodeBuilder.reflectionHashCode(this, "id");
+            return HashCodeBuilder.reflectionHashCode(this);
         }
     }
 
     public static class InteractionRequest {
 
-        private HttpMethod method;
-
-        private String uri;
-
-        private HttpHeaders headers;
-
-        private String body;
+        private final HttpMethod method;
+        private final String uri;
+        private final HttpHeaders headers;
+        private final String body;
 
         public InteractionRequest(HttpMethod method, String uri, HttpHeaders headers, String body) {
             this.method = method;
@@ -264,10 +217,6 @@ public class Pact {
 
         public String getUri() {
             return uri;
-        }
-
-        public void setUri(String uri) {
-            this.uri = uri;
         }
 
         public HttpHeaders getHeaders() {
@@ -292,13 +241,10 @@ public class Pact {
 
     public static class InteractionResponse {
 
-        private int status;
-
-        private HttpHeaders headers;
-
-        private String body;
-
-        private String schema;
+        private final int status;
+        private final HttpHeaders headers;
+        private final String body;
+        private final String schema;
 
         public InteractionResponse(int status, HttpHeaders headers, String body, String schema) {
             this.status = status;

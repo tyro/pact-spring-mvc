@@ -291,7 +291,6 @@ public class ReturnExpect<T> {
         response.getBody().reset();
 
         Pact.Interaction interaction = new Pact.Interaction(
-                null,
                 new Pact.InteractionRequest(restRequestDescriptor.getMethod(), urlencode(restRequestDescriptor.getUrl()), clientRequest.getHeaders(), extractBodyContent(restRequestDescriptor.getRequest())),
                 new Pact.InteractionResponse(response.getRawStatusCode(), response.getHeaders(), bodyString, schema),
                 objectConverter);

@@ -22,7 +22,6 @@ package com.tyro.oss.pact.spring4.pact.provider;
 import com.google.gson.GsonBuilder;
 import com.tyro.oss.pact.spring4.pact.model.ObjectStringConverterSource;
 import com.tyro.oss.pact.spring4.pact.model.Pact;
-import com.tyro.oss.pact.spring4.pact.model.Pact.Interaction;
 import com.tyro.oss.pact.spring4.pact.model.Pact.Workflow;
 import com.tyro.oss.pact.spring4.pact.provider.annotations.PactDefinition;
 import com.tyro.oss.pact.spring4.pact.provider.annotations.ProviderState;
@@ -85,26 +84,12 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
     @Override
     protected String testName(FrameworkMethod method) {
         PactFrameworkMethod pactFrameworkMethod = (PactFrameworkMethod) method;
-
-        if (pactFrameworkMethod.getWorkflow() != null) {
-            return testNameForWorkflow(pactFrameworkMethod);
-        }
-
-        return testNameForSingleInteraction(pactFrameworkMethod, pactFrameworkMethod.getInteraction());
+        return testNameForWorkflow(pactFrameworkMethod);
     }
 
     private String testNameForWorkflow(PactFrameworkMethod pactFrameworkMethod) {
         return pactFrameworkMethod.getWorkflow().getId()
                 + " Pact("
-                + pactFrameworkMethod.getPactVersion()
-                + ")";
-
-    }
-
-    @Deprecated
-    private String testNameForSingleInteraction(PactFrameworkMethod pactFrameworkMethod, Interaction interaction) {
-        return interaction.getId() + " - " + interaction.getRequest().getMethod() + " => [" + interaction.getRequest().getUri()
-                + "] Pact("
                 + pactFrameworkMethod.getPactVersion()
                 + ")";
     }
@@ -119,13 +104,8 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
                     LOG.warn("Test has been excluded. Test will show as passed but was *NOT* run.");
                     return;
                 }
-                if (pactFrameworkMethod.getWorkflow() != null) {
-                    setUpProviderState(test, pactFrameworkMethod.getWorkflow());
-                    pactFrameworkMethod.invokeExplosively(test, pactFrameworkMethod.getWorkflow().getInteractions());
-                } else {
-                    setUpProviderState(test, pactFrameworkMethod.getInteraction());
-                    pactFrameworkMethod.invokeExplosively(test, Collections.singletonList(pactFrameworkMethod.getInteraction()));
-                }
+                setUpProviderState(test, pactFrameworkMethod.getWorkflow());
+                pactFrameworkMethod.invokeExplosively(test, pactFrameworkMethod.getWorkflow().getInteractions());
             }
         };
     }
@@ -201,49 +181,17 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
 
             boolean shouldExclude = consumerFilter.shouldExcludePact(clazz);
 
-            if (pact.getInteractions() != null) {
+            List<Workflow> uniqueWorkflows = getUniqueWorkflows(pact);
 
-                List<Interaction> uniqueInteractions = getUniqueInteractions(pact);
-
-                for (Interaction interaction : uniqueInteractions) {
-                    if (!pactFilter.shouldExcludeInteractionOrWorkflow(clazz, pact, interaction.getId())) {
-                        if (runOnly.isEmpty() || runOnly.contains(interaction.getId())) {
-                            testMethods.add(new PactFrameworkMethod(pact.getDisplayName(), interaction, shouldExclude));
-                        }
-                    }
-                }
-            }
-
-            if (pact.getWorkFlows() != null) {
-
-                List<Workflow> uniqueWorkflows = getUniqueWorkflows(pact);
-
-                for (Workflow workflow : uniqueWorkflows) {
-                    if (!pactFilter.shouldExcludeInteractionOrWorkflow(clazz, pact, workflow.getId())) {
-                        if (runOnly.isEmpty() || runOnly.contains(workflow.getId())) {
-                            testMethods.add(new PactFrameworkMethod(pact.getDisplayName(), workflow, shouldExclude));
-                        }
+            for (Workflow workflow : uniqueWorkflows) {
+                if (!pactFilter.shouldExcludeInteractionOrWorkflow(clazz, pact, workflow.getId())) {
+                    if (runOnly.isEmpty() || runOnly.contains(workflow.getId())) {
+                        testMethods.add(new PactFrameworkMethod(pact.getDisplayName(), workflow, shouldExclude));
                     }
                 }
             }
         }
         return testMethods;
-    }
-
-    private List<Interaction> getUniqueInteractions(Pact pact) {
-        List<Interaction> uniqueInteractions = new ArrayList<>();
-
-        for (Interaction interaction : pact.getInteractions()) {
-            Interaction existingInteraction = uniqueInteractions.stream().filter(isEqual(interaction)).findFirst().orElse(null);
-
-            if (existingInteraction != null) {
-                LOG.info("Interaction " + interaction.getId() + " is a duplicate of " + existingInteraction.getId() + " and will not be replayed");
-            } else {
-                uniqueInteractions.add(interaction);
-            }
-        }
-
-        return uniqueInteractions;
     }
 
     private List<Workflow> getUniqueWorkflows(Pact pact) {
@@ -282,11 +230,8 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
         return providerStateMethods;
     }
 
-    @Deprecated
-    private void setUpProviderState(Object testInstance, Interaction interaction) throws Exception {
-        Pact.ProviderState providerState = interaction.getProviderState();
-
-        if (providerState != null) {
+    private void setUpProviderState(Object testInstance, Workflow workflow) throws Exception {
+        for (Pact.ProviderState providerState : workflow.getProviderStates()) {
             if (testInstance instanceof ObjectStringConverterSource) {
                 providerState.setJsonConverter(((ObjectStringConverterSource) testInstance).getConverter());
             } else {
@@ -297,23 +242,6 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
                 throw new IllegalStateException("Cannot find a setup method for provider state " + providerState.getDescription());
             }
             providerStateSetupMethod.invoke(testInstance, providerState.getStates(providerStateSetupMethod.getGenericParameterTypes()));
-        }
-    }
-
-    private void setUpProviderState(Object testInstance, Workflow workflow) throws Exception {
-        if (workflow.getProviderStates() != null) {
-            for (Pact.ProviderState providerState : workflow.getProviderStates()) {
-                if (testInstance instanceof ObjectStringConverterSource) {
-                    providerState.setJsonConverter(((ObjectStringConverterSource) testInstance).getConverter());
-                } else {
-                    providerState.setJsonConverter(jsonConverter);
-                }
-                Method providerStateSetupMethod = providerStateMethods.get(providerState.getDescription());
-                if (providerStateSetupMethod == null) {
-                    throw new IllegalStateException("Cannot find a setup method for provider state " + providerState.getDescription());
-                }
-                providerStateSetupMethod.invoke(testInstance, providerState.getStates(providerStateSetupMethod.getGenericParameterTypes()));
-            }
         }
     }
 
@@ -333,23 +261,11 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
 
     private class PactFrameworkMethod extends FrameworkMethod {
 
-        private String pactVersion;
-        private boolean exclude;
+        private final String pactVersion;
+        private final Workflow workflow;
+        private final boolean exclude;
 
-        @Deprecated
-        private Interaction interaction;
-
-        private Workflow workflow;
-
-        @Deprecated
-        PactFrameworkMethod(String pactVersion, Interaction interaction, boolean exclude) throws Exception {
-            super(performInteractionMethod);
-            this.pactVersion = pactVersion;
-            this.interaction = interaction;
-            this.exclude = exclude;
-        }
-
-        PactFrameworkMethod(String pactVersion, Workflow workflow, boolean exclude) throws Exception {
+        PactFrameworkMethod(String pactVersion, Workflow workflow, boolean exclude) {
             super(performInteractionMethod);
             this.pactVersion = pactVersion;
             this.workflow = workflow;
@@ -360,12 +276,12 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
             return pactVersion;
         }
 
-        public Interaction getInteraction() {
-            return interaction;
-        }
-
         public Workflow getWorkflow() {
             return workflow;
+        }
+
+        public boolean shouldExclude() {
+            return this.exclude;
         }
 
         @Override
@@ -381,10 +297,6 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
         @Override
         public String toString() {
             return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-        }
-
-        public boolean shouldExclude() {
-            return this.exclude;
         }
     }
 }

@@ -72,16 +72,7 @@ public class DefaultPactResolver implements PactResolver {
             throw new IllegalStateException("Unable to successfully resolve pact file from any broker");
         }
 
-        String pactJson = response.getBody();
-
-        Pact pact;
-
-        try {
-            pact = Pact.parse(pactJson, jsonConverter);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        Pact pact = Pact.parse(response.getBody(), jsonConverter);
         if (response.getHeaders().get("X-Pact-Consumer-Version") != null) {
             pact.setNumericVersion(response.getHeaders().get("X-Pact-Consumer-Version").get(0));
         } else {
