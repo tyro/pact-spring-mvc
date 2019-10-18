@@ -2,7 +2,7 @@
  * #%L
  * pact-spring-mvc
  * %%
- * Copyright (C) 2016 Tyro Payments Pty Ltd
+ * Copyright (C) 2016 - 2019 Tyro Payments Pty Ltd
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@
  * limitations under the License.
  * #L%
  */
-package com.tyro.oss.pact.spring4.pact.provider;
+package com.tyro.oss.pact.spring4.pact.provider.annotations;
 
-import com.tyro.oss.pact.spring4.pact.model.Pact;
-import com.tyro.oss.pact.spring4.pact.provider.annotations.PactDefinition;
-import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.List;
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ProviderState {
 
-public interface PactResolver {
-
-    List<Pact> resolvePacts(PactDefinition pactDefinition, ObjectStringConverter jsonConverter) throws Exception;
-
+    String value() default "";
 }

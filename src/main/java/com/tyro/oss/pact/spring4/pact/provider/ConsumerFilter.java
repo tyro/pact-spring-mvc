@@ -19,16 +19,12 @@
  */
 package com.tyro.oss.pact.spring4.pact.provider;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
+import com.tyro.oss.pact.spring4.pact.provider.annotations.PactDefinition;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.Objects;
 
-
-import org.springframework.core.annotation.AnnotationUtils;
-
-
-import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.PactDefinition;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class ConsumerFilter {
 

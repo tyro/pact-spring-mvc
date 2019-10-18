@@ -19,23 +19,19 @@
  */
 package com.tyro.oss.pact.spring4.pact.consumer;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-
+import com.google.gson.GsonBuilder;
+import com.tyro.oss.pact.rest.RestRequestDescriptor;
+import com.tyro.oss.pact.spring4.pact.model.Pact.ProviderState;
+import com.tyro.oss.pact.spring4.util.GsonStringConverter;
+import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-
-import com.google.gson.GsonBuilder;
-
-import com.tyro.oss.pact.rest.RestRequestDescriptor;
-import com.tyro.oss.pact.spring4.pact.model.Pact.ProviderState;
-import com.tyro.oss.pact.spring4.util.GsonStringConverter;
-import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TuPactRecordingServer {
 
@@ -84,7 +80,7 @@ public class TuPactRecordingServer {
     /**
      * Request for the provider to be in a particular state before the next interaction.
      *
-     * @param description The name of the state method that is defined in the provider test by @{@link com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.ProviderState}
+     * @param description The name of the state method that is defined in the provider test by @{@link com.tyro.oss.pact.spring4.pact.provider.annotations.ProviderState}
      * @param states      Parameters that will be passed to the method identified by the description
      * @return The same recording instance with the provider state recorded.
      */

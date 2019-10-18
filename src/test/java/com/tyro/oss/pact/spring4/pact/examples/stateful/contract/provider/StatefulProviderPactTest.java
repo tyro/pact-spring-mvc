@@ -19,18 +19,16 @@
  */
 package com.tyro.oss.pact.spring4.pact.examples.stateful.contract.provider;
 
+import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api.BookDTO;
+import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.provider.repository.Bookshelf;
+import com.tyro.oss.pact.spring4.pact.provider.PactTest;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.PactDefinition;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.ProviderState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-
-import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.api.BookDTO;
-import com.tyro.oss.pact.spring4.pact.examples.stateful.contract.provider.repository.Bookshelf;
-import com.tyro.oss.pact.spring4.pact.provider.PactTest;
-import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner;
-import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.ProviderState;
-
-@PactTestRunner.PactDefinition(
+@PactDefinition(
         provider = "example-provider",
         consumer = "example-consumer",
         localPactFilePath = "target/pact/stateful_contract_pacts.json"

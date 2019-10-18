@@ -21,7 +21,7 @@ package com.tyro.oss.pact.spring4.pact.provider;
 
 import com.tyro.oss.pact.spring4.pact.PactBrokerUrlSource;
 import com.tyro.oss.pact.spring4.pact.model.Pact;
-import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner.PactDefinition;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.PactDefinition;
 import com.tyro.oss.pact.spring4.util.ObjectStringConverter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;

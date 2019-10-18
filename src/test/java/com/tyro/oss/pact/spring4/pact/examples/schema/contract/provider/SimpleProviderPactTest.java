@@ -24,14 +24,12 @@
  */
 package com.tyro.oss.pact.spring4.pact.examples.schema.contract.provider;
 
+import com.tyro.oss.pact.spring4.pact.provider.PactTest;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.PactDefinition;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-
-import com.tyro.oss.pact.spring4.pact.provider.PactTest;
-import com.tyro.oss.pact.spring4.pact.provider.PactTestRunner;
-
-@PactTestRunner.PactDefinition(
+@PactDefinition(
         provider = "example-provider",
         consumer = "example-consumer",
         localPactFilePath = "target/pact/example_provider_pacts.json"

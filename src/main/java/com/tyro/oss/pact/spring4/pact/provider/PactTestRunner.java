@@ -24,6 +24,8 @@ import com.tyro.oss.pact.spring4.pact.model.ObjectStringConverterSource;
 import com.tyro.oss.pact.spring4.pact.model.Pact;
 import com.tyro.oss.pact.spring4.pact.model.Pact.Interaction;
 import com.tyro.oss.pact.spring4.pact.model.Pact.Workflow;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.PactDefinition;
+import com.tyro.oss.pact.spring4.pact.provider.annotations.ProviderState;
 import com.tyro.oss.pact.spring4.pact.provider.annotations.WithPactFilter;
 import com.tyro.oss.pact.spring4.pact.provider.annotations.WithPactResolver;
 import com.tyro.oss.pact.spring4.util.GsonStringConverter;
@@ -41,10 +43,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -331,29 +329,6 @@ public class PactTestRunner extends SpringJUnit4ClassRunner {
                 throw new IllegalStateException("Invalid ObjectStringConverterSource - Do you have a public no-arg constructor?", e);
             }
         }
-    }
-
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface PactDefinition {
-        String localPactFilePath() default "";
-
-        String[] runOnly() default {};
-
-        String provider();
-
-        String consumer();
-
-        String[] pactVersions() default {};
-
-        Class<? extends ObjectStringConverterSource> converterSource() default ObjectStringConverterSource.class;
-    }
-
-    @Target(ElementType.METHOD)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface ProviderState {
-
-        String value() default "";
     }
 
     private class PactFrameworkMethod extends FrameworkMethod {
