@@ -37,8 +37,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.UriUtils;
 
@@ -57,7 +55,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(PactTestRunner.class)
 @WebAppConfiguration
-@Transactional(propagation = Propagation.SUPPORTS)
 public abstract class PactTestBase extends AbstractJUnit4SpringContextTests {
 
     private static final Logger LOG = LoggerFactory.getLogger(PactTestBase.class);
