@@ -62,7 +62,7 @@ If you don't specify these properties an exception will be thrown.
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>com.tyro.oss.pact.spring4.pact.consumer.PactPublisher</mainClass>
+                                    <mainClass>com.tyro.oss.pact.spring.pact.consumer.PactPublisher</mainClass>
                                     <classpathScope>test</classpathScope>
                                     <commandlineArgs>{{your-artifactName Here}} ${project.version} ${project.basedir}/target/pact/</commandlineArgs>
                                 </configuration>
