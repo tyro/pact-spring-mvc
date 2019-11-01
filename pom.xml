@@ -1,10 +1,21 @@
-<?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tyro.oss.pact</groupId>
     <artifactId>pact-spring-mvc</artifactId>
     <version>1.0.1-SNAPSHOT</version>
+    <name>Pact Spring MVC</name>
+    <description>A library to enable recording/publishing and download/playback of Pact test files.</description>
+    <url>https://github.com/tyro/pact-spring-mvc</url>
+
+    <scm>
+        <connection>scm:git:https://github.com/tyro/pact-spring-mvc.git</connection>
+        <developerConnection>scm:git:https://github.com/tyro/pact-spring-mvc.git</developerConnection>
+        <url>https://github.com/tyro/pact-spring-mvc</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <springframework.version>5.2.0.RELEASE</springframework.version>
@@ -267,6 +278,20 @@
             <artifactId>unitils-core</artifactId>
             <version>3.3</version>
         </dependency>
-
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <email>opensource@tyro.com</email>
+            <organization>Tyro Payments Limited</organization>
+            <organizationUrl>https://www.tyro.com</organizationUrl>
+        </developer>
+    </developers>
 </project>
