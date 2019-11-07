@@ -27,7 +27,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matcher;
 import org.json.JSONException;
-import org.junit.ComparisonFailure;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -59,6 +58,7 @@ import static java.util.stream.Collectors.toMap;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReturnExpect<T> {
 
@@ -213,14 +213,10 @@ public class ReturnExpect<T> {
                     try {
                         JSONAssert.assertEquals(expectedBody, actualBody, false);
                     } catch (JSONException e) {
-                        try {
-                            assertThat(actualBody, is(expectedBody));
-                        } catch (AssertionError ex) {
-                            throw new ComparisonFailure(e.getMessage(), expectedBody, actualBody);
-                        }
+                        assertEquals(expectedBody, actualBody, e.getMessage());
                     }
                 } else {
-                    assertThat(actualBody, is(expectedBody));
+                    assertEquals(expectedBody, actualBody);
                 }
 
                 assertRequestHeaders(mockRequest.getHeaders(), restRequestDescriptor.getRequest(), additionalExpectedHeaders);

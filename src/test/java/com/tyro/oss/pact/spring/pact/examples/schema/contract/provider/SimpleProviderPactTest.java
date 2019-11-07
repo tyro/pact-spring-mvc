@@ -26,7 +26,9 @@ package com.tyro.oss.pact.spring.pact.examples.schema.contract.provider;
 
 import com.tyro.oss.pact.spring.pact.provider.PactTest;
 import com.tyro.oss.pact.spring.pact.provider.annotations.PactDefinition;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @PactDefinition(
@@ -34,6 +36,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
         consumer = "example-consumer",
         localPactFilePath = "target/pact/example_provider_pacts.json"
 )
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SimpleWebConfig.class)
 @WebAppConfiguration
 public class SimpleProviderPactTest extends PactTest {

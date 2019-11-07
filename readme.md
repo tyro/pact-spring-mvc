@@ -9,7 +9,7 @@ This library is not thread safe - making mock mvc calls from multiple threads wi
 
 ## Copyright and Licensing
 
-Copyright (C) 2016 Tyro Payments Pty Ltd
+Copyright (C) 2016 - 2019 Tyro Payments Pty Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -107,14 +107,14 @@ exercise for the reader :)
 Next we will define our contract expectations. We create the class SimpleConsumerPactTest.
 
 ~~~
-public class SimpleConsumerPactTest {
+class SimpleConsumerPactTest {
 
     ...
     private TuPactRecordingServer recordingServer;
     private IntegerService integerService;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeEach
+    void setup() throws Exception {
         RestTemplate restTemplate = new RestTemplate();
 
         integerService = new IntegerService(restTemplate);
@@ -125,8 +125,8 @@ public class SimpleConsumerPactTest {
 
     ...
 
-    @After
-    public void closeTuPact() throws Exception {
+    @AfterEach
+    void closeTuPact() throws Exception {
         recordingServer.close();
     }
 }
@@ -140,18 +140,14 @@ We also need to remember to close our RecordingServer in our teardown to verify 
 file is flushed to disk and closed, and return the RestTemplate to its original state.
 
 ~~~
-public class SimpleConsumerPactTest {
+class SimpleConsumerPactTest {
 
-    @Rule
-    public TestName testName = new TestName();
-    ...
-
-    @Before
+    @BeforeEach
     ...
 
     @Test
-    public void shouldRetrieveDefaultValue() throws Exception {
-        recordingServer.startWorkflow(testName.getMethodName());
+    void shouldRetrieveDefaultValue(TestInfo testInfo) {
+        recordingServer.startWorkflow(testInfo.getDisplayName());
 
         recordingServer.expect(new RestRequestDescriptor<>("/integer", HttpMethod.GET, null, IntegerDTO.class))
                 .andReturn(new IntegerDTO(0));
@@ -159,7 +155,7 @@ public class SimpleConsumerPactTest {
         assertThat(integerService.getLatestInteger(), is(new IntegerDTO(0)));
     }
 
-    @After
+    @AfterEach
     ...
 }
 ~~~
@@ -195,6 +191,7 @@ As you can see, we have hard-coded the IntegerDTO value, so there is no state to
         consumer = "example-consumer",
         localPactFilePath = "target/pact/example_provider_pacts.json"
 )
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SimpleWebConfig.class)
 @WebAppConfiguration
 public class SimpleProviderPactTest extends PactTest {
@@ -256,12 +253,12 @@ The setup of this consumer test, below, is similar to the previous one, but it a
 state and zero or more objects that will be passed into it. These objects must conform to the method signature provided by the provider.
 
 ~~~
-public class StatefulConsumerPactTest {
+class StatefulConsumerPactTest {
 
     ...
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeEach
+    void setup() throws Exception {
         ...
 
         shelvedRead = new BookDTO("Essentialism: The Disciplined Pursuite of Less", true, true);
@@ -285,14 +282,14 @@ public class StatefulConsumerPactTest {
 The test methods below proceed in the same manner as the previous example, except that now our expectations can reflect the state we've defined above.
 
 ~~~
-public class StatefulConsumerPactTest {
+class StatefulConsumerPactTest {
 
-    @Before
+    @BeforeEach
     ...
 
     @Test
-    public void shouldRetrieveEntireBookshelf() throws Exception {
-        recordingServer.startWorkflow(testName.getMethodName());
+    void shouldRetrieveEntireBookshelf(TestInfo testInfo) {
+        recordingServer.startWorkflow(testInfo.getDisplayName());
 
         recordingServer
                 .expect(getBooksOwnedDescriptor())
@@ -302,8 +299,8 @@ public class StatefulConsumerPactTest {
     }
 
     @Test
-    public void shouldRetrieveEntireReadList() throws Exception {
-        recordingServer.startWorkflow(testName.getMethodName());
+    void shouldRetrieveEntireReadList(TestInfo testInfo) {
+        recordingServer.startWorkflow(testInfo.getDisplayName());
 
         recordingServer
                 .expect(getBooksReadDescriptor())
@@ -312,7 +309,7 @@ public class StatefulConsumerPactTest {
         assertThat(bookshelfService.getBooksRead(), is(new BookCollectionDTO(shelvedRead, unshelvedRead)));
     }
 
-    @After
+    @AfterEach
     ...
 }
 ~~~
@@ -326,9 +323,10 @@ will call to load the objects added to the contract by the ```withState``` call 
         consumer = "example-consumer",
         localPactFilePath = "target/pact/stateful_contract_pacts.json"
 )
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = StatefulWebConfig.class)
 @WebAppConfiguration
-public class StatefulProviderPactTest extends PactTest {
+class StatefulProviderPactTest extends PactTest {
 
     @Autowired
     private Bookshelf bookshelf;

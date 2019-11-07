@@ -22,11 +22,10 @@ package com.tyro.oss.pact.spring.pact.simple.message.body;
 import com.tyro.oss.pact.rest.RestRequestDescriptor;
 import com.tyro.oss.pact.spring.pact.consumer.TuPactRecordingServer;
 import com.tyro.oss.pact.spring.pact.simple.message.body.service.BooleanService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,15 +34,13 @@ import java.io.File;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class SimpleMessageBodyPactTest {
+class SimpleMessageBodyPactTest {
 
-    @Rule
-    public TestName testName = new TestName();
     private TuPactRecordingServer recordingServer;
     private BooleanService booleanService;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeEach
+    void setup() {
         RestTemplate restTemplate = new RestTemplate();
 
         booleanService = new BooleanService(restTemplate);
@@ -53,8 +50,8 @@ public class SimpleMessageBodyPactTest {
     }
 
     @Test
-    public void shouldRetrieveDefaultValue() throws Exception {
-        recordingServer.startWorkflow(testName.getMethodName());
+    void shouldRetrieveDefaultValue(TestInfo testInfo) {
+        recordingServer.startWorkflow(testInfo.getDisplayName());
 
         recordingServer.expect(new RestRequestDescriptor<>("/string", HttpMethod.PUT, Boolean.TRUE, String.class))
                 .andReturn("Blah");
@@ -62,8 +59,8 @@ public class SimpleMessageBodyPactTest {
         assertThat(booleanService.getString(), is("Blah"));
     }
 
-    @After
-    public void closeTuPact() throws Exception {
+    @AfterEach
+    void closeTuPact() {
         recordingServer.close();
     }
 }

@@ -23,8 +23,7 @@ import com.tyro.oss.pact.spring.pact.model.Pact;
 import org.apache.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StatusCodeNoContentResponseBodyMatcher implements ResponseBodyMatcher {
 
@@ -36,7 +35,7 @@ public class StatusCodeNoContentResponseBodyMatcher implements ResponseBodyMatch
     @Override
     public void assertContent(ResultActions expectations, Pact.InteractionResponse response) throws Exception {
         String responseContent = expectations.andReturn().getResponse().getContentAsString();
-        assertThat("204 HTTP Status Codes must not contain a response body", responseContent, is(""));
+        assertEquals("", responseContent, "204 HTTP Status Codes must not contain a response body");
     }
 
 }
