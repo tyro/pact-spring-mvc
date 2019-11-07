@@ -1,5 +1,8 @@
 # pact-spring-mvc
 
+[![Build Status](https://travis-ci.org/tyro/pact-spring-mvc.svg?branch=master)](https://travis-ci.org/tyro/pact-spring-mvc)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+
 A library to enable recording/publishing and download/playback of PACT test files.
 
 This library is not thread safe - making mock mvc calls from multiple threads will not work. This reflects the underlying behaviour of the spring test framework.
