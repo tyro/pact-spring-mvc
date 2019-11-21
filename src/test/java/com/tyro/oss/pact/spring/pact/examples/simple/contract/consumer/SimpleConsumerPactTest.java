@@ -23,11 +23,10 @@ import com.tyro.oss.pact.rest.RestRequestDescriptor;
 import com.tyro.oss.pact.spring.pact.consumer.TuPactRecordingServer;
 import com.tyro.oss.pact.spring.pact.examples.simple.contract.api.IntegerDTO;
 import com.tyro.oss.pact.spring.pact.examples.simple.contract.consumer.service.IntegerService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,15 +35,13 @@ import java.io.File;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class SimpleConsumerPactTest {
+class SimpleConsumerPactTest {
 
-    @Rule
-    public TestName testName = new TestName();
     private TuPactRecordingServer recordingServer;
     private IntegerService integerService;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeEach
+    void setup() {
         RestTemplate restTemplate = new RestTemplate();
 
         integerService = new IntegerService(restTemplate);
@@ -54,8 +51,8 @@ public class SimpleConsumerPactTest {
     }
 
     @Test
-    public void shouldRetrieveDefaultValue() throws Exception {
-        recordingServer.startWorkflow(testName.getMethodName());
+    void shouldRetrieveDefaultValue(TestInfo testInfo) {
+        recordingServer.startWorkflow(testInfo.getDisplayName());
 
         recordingServer.expect(new RestRequestDescriptor<>("/integer", HttpMethod.GET, null, IntegerDTO.class))
                 .andReturn(new IntegerDTO(0));
@@ -63,8 +60,8 @@ public class SimpleConsumerPactTest {
         assertThat(integerService.getLatestInteger(), is(new IntegerDTO(0)));
     }
 
-    @After
-    public void closeTuPact() throws Exception {
+    @AfterEach
+    void closeTuPact() {
         recordingServer.close();
     }
 }

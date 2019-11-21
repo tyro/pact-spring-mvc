@@ -19,9 +19,9 @@
  */
 package com.tyro.oss.pact.spring.pact;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,15 +34,15 @@ public class PactBrokerUrlPropertiesTest {
     private String oldBrokerDownloadUrlProperty;
     private String oldBrokerPublishUrlProperty;
 
-    @Before
-    public void setpURLSource() throws Exception {
+    @BeforeEach
+    void setpURLSource() {
         pactBrokerUrlSource = new PactBrokerUrlSource();
         oldBrokerDownloadUrlProperty = System.getProperty(PactBrokerUrlSource.PACT_BROKER_DOWNLOAD_URLS_PROPERTY);
         oldBrokerPublishUrlProperty = System.getProperty(PactBrokerUrlSource.PACT_BROKER_PUBLISH_URL_PROPERTY);
     }
 
-    @After
-    public void returnSystemProperty() {
+    @AfterEach
+    void returnSystemProperty() {
         if (oldBrokerDownloadUrlProperty != null) {
             System.setProperty(PactBrokerUrlSource.PACT_BROKER_DOWNLOAD_URLS_PROPERTY, oldBrokerDownloadUrlProperty);
         }
@@ -52,13 +52,13 @@ public class PactBrokerUrlPropertiesTest {
     }
 
     @Test
-    public void shouldGetBrokerPublishURLsWhenSystemPropertyIsNotDefined() {
+    void shouldGetBrokerPublishURLsWhenSystemPropertyIsNotDefined() {
         System.clearProperty(PactBrokerUrlSource.PACT_BROKER_PUBLISH_URL_PROPERTY);
         assertThat(pactBrokerUrlSource.getPactUrlForPublish(), is("test"));
     }
 
     @Test
-    public void shouldGetMultipleDownloadURLsWhenSystemPropertyIsNotDefined() throws Exception {
+    void shouldGetMultipleDownloadURLsWhenSystemPropertyIsNotDefined() throws Exception {
         System.clearProperty(PactBrokerUrlSource.PACT_BROKER_DOWNLOAD_URLS_PROPERTY);
         String[] propertyValues = new String[]{"test1", "test2"};
         assertThat(pactBrokerUrlSource.getPactUrlsToDownloadPacts(), arrayContaining(propertyValues));

@@ -23,15 +23,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.tyro.oss.pact.spring.pact.model.Pact;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.ComparisonFailure;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import static com.tyro.oss.pact.spring.util.JsonSchemaMatcher.matchesSchema;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 
 public class JsonResponseBodyMatcher implements ResponseBodyMatcher {
@@ -82,12 +81,12 @@ public class JsonResponseBodyMatcher implements ResponseBodyMatcher {
 
             if (actual.isJsonPrimitive()) {
                 final JsonElement expected = parser.parse(expectedJsonResponse);
-                assertThat(actual, is(expected));
+                assertEquals(expected, actual);
             } else {
                 try {
                     JSONAssert.assertEquals(expectedJsonResponse, content, false);
                 } catch (AssertionError e) {
-                    throw new ComparisonFailure(e.getMessage(), expectedJsonResponse, content);
+                    assertEquals(expectedJsonResponse, content, e.getMessage());
                 }
             }
         }

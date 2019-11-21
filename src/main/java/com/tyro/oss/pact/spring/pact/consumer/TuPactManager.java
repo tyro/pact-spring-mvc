@@ -23,9 +23,9 @@ import com.google.gson.GsonBuilder;
 import com.tyro.oss.pact.spring.pact.consumer.annotations.PactServer;
 import com.tyro.oss.pact.spring.util.GsonStringConverter;
 import com.tyro.oss.pact.spring.util.ObjectStringConverter;
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -41,62 +41,47 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TuPactManager implements MethodRule {
+public class TuPactManager implements BeforeEachCallback, AfterEachCallback {
 
     protected String outputPath = "./target/pact";
 
     protected ObjectStringConverter converter = new GsonStringConverter(new GsonBuilder().create());
     private MediaType contentType = MediaType.APPLICATION_JSON;
 
+    private Set<TuPactRecordingServer> servers;
+
     @Override
-    public Statement apply(final Statement base, final FrameworkMethod method, Object testInstance) {
-        final Set<Field> serverFields = AnnotationUtils.getFieldsAnnotatedWith(testInstance.getClass(), PactServer.class);
-        final Set<TuPactRecordingServer> servers = new HashSet<>();
-        for (Field serverField : serverFields) {
-            serverField.setAccessible(true);
-            try {
-                final PactServer annotation = serverField.getAnnotation(PactServer.class);
-                final File fileName = new File(outputPath, annotation.provider().replace("-", "_") + "_pacts.json");
+    public void beforeEach(ExtensionContext context) {
+        servers = new HashSet<>();
 
-                final String expression = annotation.bean();
-                final RestTemplate restTemplate = evaluateRestTemplate(testInstance, expression);
-
-                final TuPactRecordingServer server = createServer(fileName, restTemplate);
-                servers.add(server);
-                serverField.set(testInstance, server);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Could not access field " + serverField.getName() + " annotated with @" + PactServer.class.getSimpleName(), e);
-            }
-        }
-
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                for (TuPactRecordingServer server : servers) {
-                    server.startWorkflow(method.getName());
-                }
-
-                Throwable throwable = null;
+        context.getTestClass().ifPresent(testClass -> {
+            Set<Field> serverFields = AnnotationUtils.getFieldsAnnotatedWith(testClass, PactServer.class);
+            for (Field serverField : serverFields) {
+                serverField.setAccessible(true);
                 try {
-                    base.evaluate();
-                } catch (Throwable t) {
-                    throwable = t;
-                } finally {
-                    for (TuPactRecordingServer server : servers) {
-                        try {
-                            server.close();
-                        } catch (Throwable t) {
-                            if (throwable == null) {
-                                throwable = t;
-                            }
-                        }
-                    }
-                    if (throwable != null) {
-                        throw throwable;
-                    }
+                    PactServer annotation = serverField.getAnnotation(PactServer.class);
+                    File fileName = new File(outputPath, annotation.provider().replace("-", "_") + "_pacts.json");
+
+                    String expression = annotation.bean();
+                    RestTemplate restTemplate = evaluateRestTemplate(context.getTestInstance(), expression);
+
+                    TuPactRecordingServer server = createServer(fileName, restTemplate);
+                    servers.add(server);
+                    serverField.set(context.getTestInstance(), server);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Could not access field " + serverField.getName() + " annotated with @" + PactServer.class.getSimpleName(), e);
                 }
             }
-        };
+        });
+
+        context.getTestMethod().ifPresent(testMethod -> {
+            servers.forEach(server -> server.startWorkflow(testMethod.getName()));
+        });
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) throws Exception {
+        servers.forEach(TuPactRecordingServer::close);
     }
 
     public TuPactManager useOutputPath(String path) {

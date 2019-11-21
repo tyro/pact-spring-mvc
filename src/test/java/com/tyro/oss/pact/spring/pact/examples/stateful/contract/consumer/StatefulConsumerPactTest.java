@@ -24,11 +24,10 @@ import com.tyro.oss.pact.spring.pact.consumer.TuPactRecordingServer;
 import com.tyro.oss.pact.spring.pact.examples.stateful.contract.api.BookCollectionDTO;
 import com.tyro.oss.pact.spring.pact.examples.stateful.contract.api.BookDTO;
 import com.tyro.oss.pact.spring.pact.examples.stateful.contract.consumer.service.BookshelfService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,10 +37,8 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class StatefulConsumerPactTest {
+class StatefulConsumerPactTest {
 
-    @Rule
-    public TestName testName = new TestName();
     private TuPactRecordingServer recordingServer;
     private BookshelfService bookshelfService;
 
@@ -50,8 +47,8 @@ public class StatefulConsumerPactTest {
     private BookDTO unshelvedUnread;
     private BookDTO unshelvedRead;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeEach
+    void setup() {
         RestTemplate restTemplate = new RestTemplate();
 
         bookshelfService = new BookshelfService(restTemplate);
@@ -71,8 +68,8 @@ public class StatefulConsumerPactTest {
     }
 
     @Test
-    public void shouldRetrieveEntireBookshelf() throws Exception {
-        recordingServer.startWorkflow(testName.getMethodName());
+    void shouldRetrieveEntireBookshelf(TestInfo testInfo) {
+        recordingServer.startWorkflow(testInfo.getDisplayName());
 
         recordingServer
                 .expect(getBooksOwnedDescriptor())
@@ -82,8 +79,8 @@ public class StatefulConsumerPactTest {
     }
 
     @Test
-    public void shouldRetrieveEntireReadList() throws Exception {
-        recordingServer.startWorkflow(testName.getMethodName());
+    void shouldRetrieveEntireReadList(TestInfo testInfo) {
+        recordingServer.startWorkflow(testInfo.getDisplayName());
 
         recordingServer
                 .expect(getBooksReadDescriptor())
@@ -92,8 +89,8 @@ public class StatefulConsumerPactTest {
         assertThat(bookshelfService.getBooksRead(), is(new BookCollectionDTO(shelvedRead, unshelvedRead)));
     }
 
-    @After
-    public void closeTuPact() throws Exception {
+    @AfterEach
+    void closeTuPact() {
         recordingServer.close();
     }
 

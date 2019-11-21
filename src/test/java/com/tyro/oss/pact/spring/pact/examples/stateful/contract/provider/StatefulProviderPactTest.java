@@ -24,8 +24,10 @@ import com.tyro.oss.pact.spring.pact.examples.stateful.contract.provider.reposit
 import com.tyro.oss.pact.spring.pact.provider.PactTest;
 import com.tyro.oss.pact.spring.pact.provider.annotations.PactDefinition;
 import com.tyro.oss.pact.spring.pact.provider.annotations.ProviderState;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @PactDefinition(
@@ -33,6 +35,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
         consumer = "example-consumer",
         localPactFilePath = "target/pact/stateful_contract_pacts.json"
 )
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = StatefulWebConfig.class)
 @WebAppConfiguration
 public class StatefulProviderPactTest extends PactTest {
