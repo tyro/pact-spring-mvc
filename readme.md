@@ -9,7 +9,7 @@ This library is not thread safe - making mock mvc calls from multiple threads wi
 
 ## Copyright and Licensing
 
-Copyright (C) 2016 - 2019 Tyro Payments Pty Ltd
+Copyright (C) 2016 - 2020 Tyro Payments Pty Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
