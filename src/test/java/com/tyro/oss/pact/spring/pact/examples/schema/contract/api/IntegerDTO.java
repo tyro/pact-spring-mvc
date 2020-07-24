@@ -17,11 +17,6 @@
  * limitations under the License.
  * #L%
  */
-/*
- * Copyright (c) 2003 - 2016 Tyro Payments Limited.
- * Lv1, 155 Clarence St, Sydney NSW 2000.
- * All rights reserved.
- */
 package com.tyro.oss.pact.spring.pact.examples.schema.contract.api;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
