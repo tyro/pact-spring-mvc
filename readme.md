@@ -1,5 +1,6 @@
 # pact-spring-mvc
 
+[![Download](https://maven-badges.herokuapp.com/maven-central/com.tyro.oss.pact/pact-spring-mvc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.tyro.oss.pact/pact-spring-mvc)
 [![Build Status](https://travis-ci.org/tyro/pact-spring-mvc.svg?branch=master)](https://travis-ci.org/tyro/pact-spring-mvc)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
@@ -33,6 +34,17 @@ mocks are still faking the server correctly and that your server and client are 
 See [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Getting Started
+
+`pact-spring-mvc` is available on Maven Central.
+```xml
+<dependency>
+    <groupId>com.tyro.oss.pact</groupId>
+    <artifactId>pact-spring-mvc</artifactId>
+    <version>2.0.0</version>
+    <scope>test</scope>
+</dependency>
+```
+
 `pact-spring-mvc` requires URLs for a [PACT broker](https://github.com/bethesque/pact_broker) in order to publish and download PACT files.
 You will need to specify the URLs when using this library. This can be done by:
     1. Specifying System Properties with maven or on the command line. (higher precedence)
