@@ -100,7 +100,7 @@
                         <configuration>
                             <encoding>UTF-8</encoding>
                             <licenseName>apache_v2</licenseName>
-                            <organizationName>Tyro Payments Pty Ltd</organizationName>
+                            <organizationName>Tyro Payments Limited</organizationName>
                             <inceptionYear>2016</inceptionYear>
                             <projectName>pact-spring-mvc</projectName>
                             <canUpdateCopyright>true</canUpdateCopyright>
