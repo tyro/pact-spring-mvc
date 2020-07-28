@@ -8,30 +8,10 @@ A library to enable recording/publishing and download/playback of PACT test file
 
 This library is not thread safe - making mock mvc calls from multiple threads will not work. This reflects the underlying behaviour of the spring test framework.
 
-## Copyright and Licensing
-
-Copyright (C) 2016 - 2020 Tyro Payments Limited
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
 ## Purpose
 
 This project allows you to record your integration tests (using a mocked server) against a client and then replay them against the real server to make sure your
 mocks are still faking the server correctly and that your server and client are playing nicely.
-
-## Contributing
-
-See [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Getting Started
 
@@ -198,7 +178,7 @@ public class IntegerController {
 As you can see, we have hard-coded the IntegerDTO value, so there is no state to confuse our tests.
 
 ~~~
-@PactTestRunner.PactDefinition(
+@PactDefinition(
         provider = "example-provider",
         consumer = "example-consumer",
         localPactFilePath = "target/pact/example_provider_pacts.json"
@@ -226,7 +206,7 @@ we are overriding that behaviour using the `localPactFilePath` field to indicate
 
 We have also added annotations to define our configuration and declare us a web app.  Finally, we have overridden the ```getServletContextPathWithoutTrailingSlash```.
 
-Assuming our ```WebConfig``` and controller are properly configured (they are), this is sufficient to have the PactTestRunner find the pact file,
+Assuming our ```WebConfig``` and controller are properly configured (they are), this is sufficient to find the pact file,
 load it and execute it in the WebContext.
 
 ### Stateful Contract
@@ -287,7 +267,6 @@ class StatefulConsumerPactTest {
 
     @Test
     ...
-
 }
 ~~~
 
@@ -355,3 +334,22 @@ class StatefulProviderPactTest extends PactTest {
 }
 ~~~
 
+## Copyright and Licensing
+
+Copyright (C) 2016 - 2020 Tyro Payments Limited
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+## Contributing
+
+See [CONTRIBUTING](CONTRIBUTING.md) for details.
