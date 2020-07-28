@@ -26,6 +26,7 @@ import com.tyro.oss.pact.spring.util.ObjectStringConverter;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.platform.commons.support.AnnotationSupport;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -34,11 +35,11 @@ import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
-import org.unitils.util.AnnotationUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class TuPactManager implements BeforeEachCallback, AfterEachCallback {
@@ -55,7 +56,7 @@ public class TuPactManager implements BeforeEachCallback, AfterEachCallback {
         servers = new HashSet<>();
 
         context.getTestClass().ifPresent(testClass -> {
-            Set<Field> serverFields = AnnotationUtils.getFieldsAnnotatedWith(testClass, PactServer.class);
+            List<Field> serverFields = AnnotationSupport.findAnnotatedFields(testClass, PactServer.class);
             for (Field serverField : serverFields) {
                 serverField.setAccessible(true);
                 try {

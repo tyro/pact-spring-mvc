@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import static com.tyro.oss.pact.spring.util.JsonSchemaMatcher.matchesSchema;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 
