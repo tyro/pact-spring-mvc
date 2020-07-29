@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tyro.oss.pact</groupId>
     <artifactId>pact-spring-mvc</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.0.1</version>
     <name>Pact Spring MVC</name>
     <description>A library to enable recording/publishing and download/playback of Pact test files.</description>
     <url>https://github.com/tyro/pact-spring-mvc</url>
@@ -14,7 +14,7 @@
         <connection>scm:git:https://github.com/tyro/pact-spring-mvc.git</connection>
         <developerConnection>scm:git:https://github.com/tyro/pact-spring-mvc.git</developerConnection>
         <url>https://github.com/tyro/pact-spring-mvc</url>
-        <tag>HEAD</tag>
+        <tag>2.0.1</tag>
     </scm>
 
     <properties>

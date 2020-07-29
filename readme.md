@@ -20,7 +20,7 @@ mocks are still faking the server correctly and that your server and client are 
 <dependency>
     <groupId>com.tyro.oss.pact</groupId>
     <artifactId>pact-spring-mvc</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <scope>test</scope>
 </dependency>
 ```
