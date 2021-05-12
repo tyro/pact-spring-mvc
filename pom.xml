@@ -19,7 +19,7 @@
 
     <properties>
         <springframework.version>5.2.0.RELEASE</springframework.version>
-        <springsecurity.version>5.2.0.RELEASE</springsecurity.version>
+        <springsecurity.version>5.2.10.RELEASE</springsecurity.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
     </properties>
 
